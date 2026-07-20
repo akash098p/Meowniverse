@@ -1,0 +1,65 @@
+.pet-card {
+    background: var(--color-surface);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.pet-card:active {
+    transform: scale(0.98);
+}
+
+.pet-card-avatar {
+    font-size: 2.5rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-background);
+    border-radius: 50%;
+}
+
+.pet-card-info {
+    flex: 1;
+}
+
+.pet-card-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.pet-card-species {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+}
+
+.pet-card-level {
+    font-size: 0.75rem;
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.pet-card-stats {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.pet-card-stat {
+    width: 40px;
+    height: 4px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.pet-card-stat-fill {
+    height: 100%;
+    border-radius: 2px;
+}

@@ -1,0 +1,13 @@
+/* Light Theme - Default */
+:root {
+    --color-primary: #ff6b9d;
+    --color-secondary: #c44dff;
+    --color-background: #fff5f7;
+    --color-surface: #ffffff;
+    --color-text: #2d1b3d;
+    --color-text-secondary: #7a6b8a;
+    --color-accent: #ff6b9d;
+    --color-success: #4caf50;
+    --color-warning: #ff9800;
+    --color-danger: #f44336;
+}

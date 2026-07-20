@@ -1,0 +1,13 @@
+/* Dark Theme */
+:root {
+    --color-primary: #ff6b9d;
+    --color-secondary: #c44dff;
+    --color-background: #1a1a2e;
+    --color-surface: #16213e;
+    --color-text: #e8e8e8;
+    --color-text-secondary: #a0a0b0;
+    --color-accent: #ff6b9d;
+    --color-success: #4caf50;
+    --color-warning: #ff9800;
+    --color-danger: #f44336;
+}

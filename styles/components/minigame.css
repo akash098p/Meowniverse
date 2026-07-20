@@ -1,0 +1,221 @@
+.minigame-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.minigame-card {
+    background: var(--color-surface);
+    border-radius: var(--border-radius);
+    padding: 15px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.minigame-card:active {
+    transform: scale(0.95);
+}
+
+.minigame-emoji {
+    font-size: 2.2rem;
+}
+
+.minigame-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.minigame-desc {
+    font-size: 0.7rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+}
+
+.minigame-card .play-game-btn {
+    width: 100%;
+    padding: 6px;
+    font-size: 0.75rem;
+    margin-top: 4px;
+}
+
+.quest-list {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quest-item {
+    background: var(--color-surface);
+    border-radius: var(--border-radius);
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+}
+
+.quest-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.quest-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.quest-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.quest-progress-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.quest-progress-text {
+    font-size: 0.7rem;
+    color: var(--color-text-secondary);
+}
+
+.quest-reward {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-warning);
+    white-space: nowrap;
+    margin-left: 10px;
+}
+
+.achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+    padding: 15px;
+}
+
+.achievement-card {
+    background: var(--color-surface);
+    border-radius: var(--border-radius);
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.achievement-card.locked {
+    opacity: 0.5;
+    filter: grayscale(0.5);
+}
+
+.achievement-card.unlocked {
+    border: 1px solid var(--color-primary);
+}
+
+.achievement-emoji {
+    font-size: 1.8rem;
+}
+
+.achievement-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.achievement-desc {
+    font-size: 0.65rem;
+    color: var(--color-text-secondary);
+}
+
+/* Mini Game Overlay */
+.minigame-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-background);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.2s ease;
+}
+
+.minigame-overlay-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--color-surface);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    box-shadow: var(--shadow);
+}
+
+.minigame-overlay-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.minigame-overlay-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-background);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+    transition: var(--transition);
+}
+
+.minigame-overlay-close:active {
+    background: var(--color-danger);
+    color: white;
+}
+
+.minigame-overlay-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Mini Game Stats */
+.minigame-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 16px;
+    background: var(--color-surface);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.9rem;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.minigame-stats span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

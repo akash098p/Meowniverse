@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Meowniverse - A virtual pet game where you raise adorable pets">
+    <meta name="theme-color" content="#ff6b9d">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+    <title>Meowniverse - Virtual Pet Game</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components/header.css">
+    <link rel="stylesheet" href="styles/components/pet-card.css">
+    <link rel="stylesheet" href="styles/components/action-bar.css">
+    <link rel="stylesheet" href="styles/components/modal.css">
+    <link rel="stylesheet" href="styles/components/notification.css">
+    <link rel="stylesheet" href="styles/components/shop.css">
+    <link rel="stylesheet" href="styles/components/minigame.css">
+    <link rel="stylesheet" href="styles/components/inventory.css">
+    <link rel="stylesheet" href="styles/themes/light.css">
+    <link rel="stylesheet" href="styles/themes/dark.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-content">
+                <div class="loading-egg">🥚</div>
+                <h1 class="loading-title">Meowniverse</h1>
+                <div class="loading-bar-container">
+                    <div class="loading-bar" id="loading-bar"></div>
+                </div>
+                <p class="loading-text" id="loading-text">Hatching the universe...</p>
+            </div>
+        </div>
+
+        <!-- Main Game Container -->
+        <div id="game-container" class="game-container hidden">
+            <!-- Header -->
+            <header id="game-header" class="game-header">
+                <div class="header-left">
+                    <button id="menu-btn" class="icon-btn" aria-label="Menu">☰</button>
+                    <h1 class="game-title">Meowniverse</h1>
+                </div>
+                <div class="header-center">
+                    <div class="currency-display">
+                        <span class="currency-icon">🪙</span>
+                        <span id="coin-display" class="currency-amount">0</span>
+                    </div>
+                    <div class="currency-display diamond">
+                        <span class="currency-icon">💎</span>
+                        <span id="diamond-display" class="currency-amount">0</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button id="settings-btn" class="icon-btn" aria-label="Settings">⚙️</button>
+                    <button id="notifications-btn" class="icon-btn" aria-label="Notifications">🔔</button>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main id="main-content" class="main-content">
+                <!-- Pet View Screen -->
+                <section id="pet-view" class="screen active">
+                    <div class="environment-background" id="environment-bg">
+                        <div class="weather-overlay" id="weather-overlay"></div>
+                        <div class="day-night-overlay" id="day-night-overlay"></div>
+                    </div>
+                    <div class="pet-container" id="pet-container">
+                        <div class="pet-avatar" id="pet-avatar">
+                            <div class="pet-sprite" id="pet-sprite">🐱</div>
+                            <div class="pet-mood-bubble" id="pet-mood-bubble">😊</div>
+                            <div class="pet-name-tag" id="pet-name-tag">
+                                <span id="pet-name">Pet</span>
+                                <span class="pet-level" id="pet-level">Lv.1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-bar" id="stats-bar">
+                        <div class="stat-item">
+                            <span class="stat-icon">❤️</span>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar health-bar" id="health-bar" style="width:100%"></div>
+                            </div>
+                            <span class="stat-value" id="health-value">100</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">🍖</span>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar hunger-bar" id="hunger-bar" style="width:100%"></div>
+                            </div>
+                            <span class="stat-value" id="hunger-value">100</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">😊</span>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar happiness-bar" id="happiness-bar" style="width:100%"></div>
+                            </div>
+                            <span class="stat-value" id="happiness-value">100</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">⚡</span>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar energy-bar" id="energy-bar" style="width:100%"></div>
+                            </div>
+                            <span class="stat-value" id="energy-value">100</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">🧹</span>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar cleanliness-bar" id="cleanliness-bar" style="width:100%"></div>
+                            </div>
+                            <span class="stat-value" id="cleanliness-value">100</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">😴</span>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar sleep-bar" id="sleep-bar" style="width:100%"></div>
+                            </div>
+                            <span class="stat-value" id="sleep-value">100</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Action Bar -->
+                <nav class="action-bar" id="action-bar">
+                    <button class="action-btn" data-action="feed" aria-label="Feed">🍖<span>Feed</span></button>
+                    <button class="action-btn" data-action="play" aria-label="Play">🎮<span>Play</span></button>
+                    <button class="action-btn" data-action="sleep" aria-label="Sleep">😴<span>Sleep</span></button>
+                    <button class="action-btn" data-action="bath" aria-label="Bath">🛁<span>Bath</span></button>
+                    <button class="action-btn" data-action="heal" aria-label="Heal">💊<span>Heal</span></button>
+                    <button class="action-btn" data-action="train" aria-label="Train">💪<span>Train</span></button>
+                    <button class="action-btn" data-action="study" aria-label="Study">📚<span>Study</span></button>
+                </nav>
+
+                <!-- Bottom Navigation -->
+                <nav class="bottom-nav" id="bottom-nav">
+                    <button class="nav-btn active" data-screen="pet-view" aria-label="Pet">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-label">Home</span>
+                    </button>
+                    <button class="nav-btn" data-screen="inventory" aria-label="Inventory">
+                        <span class="nav-icon">🎒</span>
+                        <span class="nav-label">Items</span>
+                    </button>
+                    <button class="nav-btn" data-screen="shop" aria-label="Shop">
+                        <span class="nav-icon">🛒</span>
+                        <span class="nav-label">Shop</span>
+                    </button>
+                    <button class="nav-btn" data-screen="minigames" aria-label="Mini Games">
+                        <span class="nav-icon">🎯</span>
+                        <span class="nav-label">Games</span>
+                    </button>
+                    <button class="nav-btn" data-screen="quests" aria-label="Quests">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-label">Quests</span>
+                    </button>
+                    <button class="nav-btn" data-screen="achievements" aria-label="Achievements">
+                        <span class="nav-icon">🏆</span>
+                        <span class="nav-label">Achieve</span>
+                    </button>
+                </nav>
+                <!-- Overlay Screens (positioned within main-content) -->
+                <section id="inventory" class="screen overlay-screen">
+                    <div class="screen-header">
+                        <h2>Inventory</h2>
+                        <button class="close-screen-btn" data-screen="inventory">✕</button>
+                    </div>
+                    <div class="inventory-grid" id="inventory-grid"></div>
+                </section>
+
+                <section id="shop" class="screen overlay-screen">
+                    <div class="screen-header">
+                        <h2>Shop</h2>
+                        <button class="close-screen-btn" data-screen="shop">✕</button>
+                    </div>
+                    <div class="shop-tabs" id="shop-tabs">
+                        <button class="shop-tab active" data-category="food">Food</button>
+                        <button class="shop-tab" data-category="furniture">Furniture</button>
+                        <button class="shop-tab" data-category="decorations">Decor</button>
+                        <button class="shop-tab" data-category="accessories">Accessories</button>
+                        <button class="shop-tab" data-category="themes">Themes</button>
+                    </div>
+                    <div class="shop-grid" id="shop-grid"></div>
+                </section>
+
+                <section id="minigames" class="screen overlay-screen">
+                    <div class="screen-header">
+                        <h2>Mini Games</h2>
+                        <button class="close-screen-btn" data-screen="minigames">✕</button>
+                    </div>
+                    <div class="minigame-grid" id="minigame-grid"></div>
+                </section>
+
+                <section id="quests" class="screen overlay-screen">
+                    <div class="screen-header">
+                        <h2>Quests & Daily Missions</h2>
+                        <button class="close-screen-btn" data-screen="quests">✕</button>
+                    </div>
+                    <div class="quest-container" id="quest-container"></div>
+                </section>
+
+                <section id="achievements" class="screen overlay-screen">
+                    <div class="screen-header">
+                        <h2>Achievements</h2>
+                        <button class="close-screen-btn" data-screen="achievements">✕</button>
+                    </div>
+                    <div class="achievement-container" id="achievement-container"></div>
+                </section>
+            </main>
+
+            <!-- Settings Modal -->
+            <div id="settings-modal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Settings</h2>
+                        <button class="modal-close" id="settings-close">✕</button>
+                    </div>
+                    <div class="modal-body settings-body">
+                        <div class="setting-group">
+                            <h3>Audio</h3>
+                            <label class="setting-row">
+                                <span>Music Volume</span>
+                                <input type="range" id="music-volume" min="0" max="100" value="70">
+                            </label>
+                            <label class="setting-row">
+                                <span>SFX Volume</span>
+                                <input type="range" id="sfx-volume" min="0" max="100" value="80">
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <h3>Notifications</h3>
+                            <label class="setting-row toggle-row">
+                                <span>Browser Notifications</span>
+                                <input type="checkbox" id="browser-notif" checked>
+                            </label>
+                            <label class="setting-row toggle-row">
+                                <span>In-Game Notifications</span>
+                                <input type="checkbox" id="game-notif" checked>
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <h3>Theme</h3>
+                            <div class="theme-selector" id="theme-selector"></div>
+                        </div>
+                        <div class="setting-group">
+                            <h3>Game</h3>
+                            <label class="setting-row toggle-row">
+                                <span>Auto-Save</span>
+                                <input type="checkbox" id="autosave" checked>
+                            </label>
+                            <button class="btn btn-secondary" id="save-now-btn">Save Now</button>
+                            <button class="btn btn-danger" id="reset-game-btn">Reset Game</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Toast -->
+            <div id="notification-toast" class="notification-toast hidden"></div>
+
+            <!-- Speech Bubble -->
+            <div id="speech-bubble" class="speech-bubble hidden"></div>
+        </div>
+    </div>
+
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>

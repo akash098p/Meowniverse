@@ -13,6 +13,7 @@ import StateManager from './core/StateManager.js';
 import SaveManager from './core/SaveManager.js';
 import GameLoop from './core/GameLoop.js';
 import MiniGameManager from './gameplay/MiniGameManager.js';
+import AudioManager from './core/AudioManager.js';
 
 /**
  * Bootstrap the game
@@ -20,6 +21,9 @@ import MiniGameManager from './gameplay/MiniGameManager.js';
 async function bootstrap() {
     try {
         console.log('[Meowniverse] Starting...');
+
+        // Initialize audio manager
+        await AudioManager.getInstance().init();
 
         // Initialize mini game manager
         MiniGameManager.getInstance().init();

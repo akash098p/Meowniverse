@@ -12,6 +12,10 @@ import GameEngine from '../core/GameEngine.js';
 import Pet from '../pets/Pet.js';
 import PetRenderer from '../pets/PetRenderer.js';
 import MeowlRenderer from '../pets/MeowlRenderer.js';
+import ModelRenderer3D from '../pets/ModelRenderer3D.js';
+import AssetConfig from '../assets/AssetConfig.js';
+import AudioManager from '../core/AudioManager.js';
+import MiniGameManager from '../gameplay/MiniGameManager.js';
 
 class UIManager {
     /** @type {UIManager} */
@@ -23,7 +27,7 @@ class UIManager {
     /** @type {Pet|null} */
     #activePet = null;
 
-    /** @type {PetRenderer|null} */
+    /** @type {PetRenderer|ModelRenderer3D|null} */
     #petRenderer = null;
 
     /** @type {Array<Function>} */
@@ -275,6 +279,14 @@ class UIManager {
         const navBtn = document.querySelector(`.nav-btn[data-screen="${screenId}"]`);
         if (navBtn) navBtn.classList.add('active');
 
+        // Toggle body class to hide action-bar and bottom-nav when overlay screens are active
+        const overlayScreens = ['inventory', 'shop', 'minigames', 'quests', 'achievements'];
+        if (overlayScreens.includes(screenId)) {
+            document.body.classList.add('has-overlay');
+        } else {
+            document.body.classList.remove('has-overlay');
+        }
+
         // Update content when switching to a screen
         switch (screenId) {
             case 'inventory': this.#updateInventory(); break;
@@ -296,7 +308,7 @@ class UIManager {
     }
 
     /**
-     * Initialize the 3D pet renderer
+     * Initialize the pet renderer (3D model or Canvas2D fallback)
      * @private
      */
     #initPetRenderer() {
@@ -311,18 +323,46 @@ class UIManager {
 
         spriteContainer.innerHTML = '';
 
-        // Use actual image for Meowl
-        if (this.#activePet?.species === 'meowl') {
-            const img = document.createElement('img');
-            img.id = 'pet-canvas';
-            img.src = 'assets/images/meowl.png';
-            img.alt = this.#activePet.name;
-            img.style.cssText = 'width:240px;height:240px;object-fit:contain;display:block;margin:0 auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));';
-            spriteContainer.appendChild(img);
-            return;
-        }
+        if (!this.#activePet) return;
 
-        // Canvas renderer for other pets
+        const species = this.#activePet.species;
+
+        // Check if species has a 3D model
+        if (AssetConfig.hasModel(species)) {
+            // Create container div for Three.js renderer
+            const rendererContainer = document.createElement('div');
+            rendererContainer.id = 'pet-3d-container';
+            rendererContainer.style.cssText = 'width:240px;height:240px;display:block;margin:0 auto;';
+            spriteContainer.appendChild(rendererContainer);
+
+            try {
+                this.#petRenderer = new ModelRenderer3D(rendererContainer, this.#activePet);
+            } catch (e) {
+                console.warn(`[UIManager] Failed to create 3D renderer for ${species}, using fallback:`, e);
+                spriteContainer.innerHTML = '';
+                this.#initCanvasFallback(spriteContainer);
+            }
+        } else {
+            // Meowl gets its special image, others get Canvas2D
+            if (species === 'meowl') {
+                const img = document.createElement('img');
+                img.id = 'pet-canvas';
+                img.src = 'assets/images/meowl.png';
+                img.alt = this.#activePet.name;
+                img.style.cssText = 'width:240px;height:240px;object-fit:contain;display:block;margin:0 auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));';
+                spriteContainer.appendChild(img);
+            } else {
+                this.#initCanvasFallback(spriteContainer);
+            }
+        }
+    }
+
+    /**
+     * Initialize Canvas2D fallback renderer
+     * @private
+     * @param {HTMLElement} container
+     */
+    #initCanvasFallback(container) {
         let canvas = document.getElementById('pet-canvas');
         if (!canvas) {
             canvas = document.createElement('canvas');
@@ -330,7 +370,7 @@ class UIManager {
             canvas.width = 240;
             canvas.height = 240;
             canvas.style.cssText = 'width:240px;height:240px;display:block;margin:0 auto;';
-            spriteContainer.appendChild(canvas);
+            container.appendChild(canvas);
         }
 
         if (this.#activePet) {
@@ -405,29 +445,41 @@ class UIManager {
                 const foods = this.#getInventoryItems('food');
                 if (foods.length === 0) {
                     this.#showNotification('No food available! Buy some from the shop.', 'warning');
+                    AudioManager.getInstance().play('sfx_error');
                     return;
                 }
                 result = pet.feed(foods[0].id);
                 this.#useInventoryItem(foods[0].id);
+                AudioManager.getInstance().play('sfx_feed');
                 break;
             case 'play':
                 result = pet.play();
+                AudioManager.getInstance().play('sfx_play');
+                // Trigger 3D model pet animation if applicable
+                if (this.#petRenderer && typeof this.#petRenderer.pet === 'function') {
+                    this.#petRenderer.pet();
+                }
                 break;
             case 'sleep':
                 if (pet.isSleeping) {
                     result = pet.wakeUp();
+                    AudioManager.getInstance().play('sfx_wake');
                 } else {
                     result = pet.sleep();
+                    AudioManager.getInstance().play('sfx_sleep');
                 }
                 break;
             case 'bath':
                 result = pet.bathe();
+                AudioManager.getInstance().play('sfx_bath');
                 break;
             case 'heal':
                 result = pet.heal();
+                AudioManager.getInstance().play('sfx_heal');
                 break;
             case 'train':
                 result = pet.train();
+                AudioManager.getInstance().play('sfx_train');
                 break;
             case 'study':
                 result = pet.study();
@@ -443,6 +495,7 @@ class UIManager {
             GameEngine.getInstance().addXP(2);
         } else {
             this.#showNotification(result.message, 'warning');
+            AudioManager.getInstance().play('sfx_error');
         }
     }
 
@@ -577,10 +630,12 @@ class UIManager {
             inv[itemId] = (inv[itemId] || 0) + 1;
             sm.set('inventory', { ...inv });
             this.#showNotification(`Purchased ${itemId}!`, 'success');
+            AudioManager.getInstance().play('sfx_coin');
             this.#updateCurrency();
             this.#updateInventory();
         } else {
             this.#showNotification('Not enough coins!', 'error');
+            AudioManager.getInstance().play('sfx_error');
         }
     }
 
@@ -616,6 +671,7 @@ class UIManager {
             grid.appendChild(card);
 
             card.querySelector('.play-game-btn').addEventListener('click', () => {
+                AudioManager.getInstance().play('sfx_click');
                 this.#startMiniGame(game.id);
             });
         }
@@ -626,8 +682,13 @@ class UIManager {
      * @private
      */
     #startMiniGame(gameId) {
-        EventBus.getInstance().emit('minigame:start', { gameId });
-        this.#showNotification(`Starting ${gameId}...`, 'info');
+        try {
+            // Try direct call first (more reliable)
+            MiniGameManager.getInstance().startGameDirect(gameId);
+        } catch (e) {
+            // Fallback to EventBus
+            EventBus.getInstance().emit('minigame:start', { gameId });
+        }
     }
 
     /**
@@ -658,7 +719,6 @@ class UIManager {
                     <span class="quest-name">${mission.name}</span>
                     <div class="quest-progress-bar">
                         <div class="quest-progress-fill" style="width:${(mission.progress / mission.max) * 100}%"></div>
-                    </div>
                     <span class="quest-progress-text">${mission.progress}/${mission.max}</span>
                 </div>
                 <span class="quest-reward">🪙 ${mission.reward}</span>

@@ -133,13 +133,13 @@ html, body {
 
 /* Overlay screens (inventory, shop, minigames, quests, achievements) */
 .screen.overlay-screen {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: var(--color-background);
-    z-index: 20;
+    z-index: 500;
     display: none;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -147,6 +147,20 @@ html, body {
 
 .screen.overlay-screen.active {
     display: flex;
+}
+
+/* Hide navigation elements when overlay screen is active */
+.overlay-screen.active ~ .action-bar,
+.overlay-screen.active ~ .bottom-nav,
+.overlay-screen.active ~ .game-header {
+    display: none;
+}
+
+/* Also hide when any overlay screen is shown via JS active class */
+body.has-overlay .action-bar,
+body.has-overlay .bottom-nav,
+body.has-overlay .game-header {
+    display: none !important;
 }
 
 .screen-header {

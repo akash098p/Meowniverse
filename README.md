@@ -1,4 +1,7 @@
 # Meowniverse 🐱
+<div align="center">
+    <img width="480" height="160" alt="twitter-gif-2078931665972252699_6a5df8190767d" src="https://github.com/user-attachments/assets/a87712ae-4055-446e-96b5-7630458698b6" />
+</div>
 
 A **production-ready browser-based Virtual Pet Game** built with **HTML5, CSS3, and modern JavaScript (ES2023 Modules)**. Runs entirely in the browser without requiring a backend.
 

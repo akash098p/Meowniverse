@@ -1,0 +1,27 @@
+{
+  "name": "meowniverse",
+  "version": "1.0.0",
+  "description": "A **production-ready browser-based Virtual Pet Game** built with **HTML5, CSS3, and modern JavaScript (ES2023 Modules)**. Runs entirely in the browser without requiring a backend.",
+  "main": "sw.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akash098p/Meowniverse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/akash098p/Meowniverse/issues"
+  },
+  "homepage": "https://github.com/akash098p/Meowniverse#readme",
+  "dependencies": {
+    "three": "^0.185.1"
+  }
+}

@@ -165,6 +165,7 @@ The mini-game framework supports these games:
 
 Each game rewards Coins, XP, and Happiness.
 
+
 ## 🌐 Browser Support
 
 - Chrome 80+

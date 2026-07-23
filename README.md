@@ -202,5 +202,4 @@ MIT License - feel free to use, modify, and distribute.
 
 ## 🙏 Acknowledgments
 
-- Built with ❤️ for pet lovers everywhere
 - Inspired by classic virtual pet games like Tamagotchi, Nintendogs, and Pou
